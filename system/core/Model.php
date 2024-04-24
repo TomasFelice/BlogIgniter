@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -6,7 +7,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2019 - 2022, CodeIgniter Foundation
+ * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +30,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
- * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
- * @license	https://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
+ * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -45,67 +45,68 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Libraries
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/userguide3/libraries/config.html
+ * @link		https://codeigniter.com/user_guide/libraries/config.html
  */
 class CI_Model {
 
-	/**
-	 * Class constructor
-	 *
-	 * @link	https://github.com/bcit-ci/CodeIgniter/issues/5332
-	 * @return	void
-	 */
-	public function __construct() {}
+    /**
+     * Class constructor
+     *
+     * @link	https://github.com/bcit-ci/CodeIgniter/issues/5332
+     * @return	void
+     */
+    public function __construct() {
+        
+    }
 
-	/**
-	 * __get magic
-	 *
-	 * Allows models to access CI's loaded classes using the same
-	 * syntax as controllers.
-	 *
-	 * @param	string	$key
-	 */
-	public function __get($key)
-	{
-		// Debugging note:
-		//	If you're here because you're getting an error message
-		//	saying 'Undefined Property: system/core/Model.php', it's
-		//	most likely a typo in your model code.
-		return get_instance()->$key;
-	}
+    /**
+     * __get magic
+     *
+     * Allows models to access CI's loaded classes using the same
+     * syntax as controllers.
+     *
+     * @param	string	$key
+     */
+    public function __get($key) {
+        // Debugging note:
+        //	If you're here because you're getting an error message
+        //	saying 'Undefined Property: system/core/Model.php', it's
+        //	most likely a typo in your model code.
+        return get_instance()->$key;
+    }
 
-	public function findAll() {
-		$this->db->select();
-		$this->db->from($this->table);
-		
-		$query = $this->db->get();
-		return $query->result();
-	}
+    function findAll() {
 
+        $this->db->select();
+        $this->db->from($this->table);
 
-	public function find($id) {
-		$this->db->select();
-		$this->db->from($this->table);
-		$this->db->where($this->table_id);
-		
-		$query = $this->db->get();
-		return $query->row();
-	}
+        $query = $this->db->get();
+        return $query->result();
+    }
 
-	public function update ($id) {
-		$this->db->where($this->table_id, $id);
-		$this->db->update($this->table);
-	}
+    function find($id) {
 
+        $this->db->select();
+        $this->db->from($this->table);
+        $this->db->where($this->table_id, $id);
 
-	public function delete ($id) {
-		$this->db->where($this->table_id, $id);
-		$this->db->delete($this->table);
-	}
+        $query = $this->db->get();
+        return $query->row();
+    }
 
-	public function insert ($data) {
-		$this->db->insert($this->table, $data);
-		return $this->db->insert_id();
-	}
+    function update($id, $data) {
+        $this->db->where($this->table_id, $id);
+        $this->db->update($this->table, $data);
+    }
+
+    function delete($id) {
+        $this->db->where($this->table_id, $id);
+        $this->db->delete($this->table);
+    }
+
+    function insert($data) {
+        $this->db->insert($this->table, $data);
+        return $this->db->insert_id();
+    }
 
 }
