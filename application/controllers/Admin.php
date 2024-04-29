@@ -6,7 +6,7 @@ class Admin extends CI_Controller {
         parent::__construct();
 
         $this->load->library("parser");
-        $this->load->library("form_validation");
+        $this->load->library("Form_validation");
 
 		$this->load->helper("url");
         $this->load->helper('form');
@@ -95,7 +95,7 @@ class Admin extends CI_Controller {
                     $this->Post->update($post_id ,$save);
                 }
 
-                $this->upload_file($post_id, $save['title']);
+                $this->upload($post_id, $save['title']);
             }
         }
 
@@ -114,7 +114,7 @@ class Admin extends CI_Controller {
         echo true;
     }
 
-    public function upload_file($post_id = null, $title = null) {
+    public function upload($post_id = null, $title = null) {
         $field_image                    = 'upload';
 
         if(!is_null($title)) {
