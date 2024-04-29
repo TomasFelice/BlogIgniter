@@ -18,6 +18,7 @@ class Admin extends CI_Controller {
         $this->load->database();
 
         $this->load->model("Post");
+        $this->load->model("Category");
     }
 
     public function index() {
@@ -114,6 +115,80 @@ class Admin extends CI_Controller {
         echo true;
     }
 
+    /*     * ***
+     * CRUD PARA LAS CATEGORIAS
+     */
+
+    public function category_list() {
+        $data["categories"] = $this->Category->findAll();
+
+        $view["body"] = $this->load->view("admin/category/list", $data, true);
+        $view["title"] = "Categories";
+        
+        $this->parser->parse("admin/template/body", $view);
+    }
+
+    public function category_save($category_id = null) {
+        if(is_null($category_id)) {
+            // Crear categoría
+            $data['name'] = "";
+            $data['url_clean'] = "";
+        } else {
+            // Editar categpría
+            $category = $this->Category->find($category_id);
+            $data['name'] = $category->name;
+            $data['url_clean'] = $category->url_clean;
+            $view["title"] = "Editar Categoría";
+        }
+
+
+        // Si es un post
+        if ($this->input->server("REQUEST_METHOD") == "POST") {
+            $this->form_validation->set_rules('name', 'Nombre', 'required|min_length[5]|max_length[100]');
+
+            $data['name'] = $this->input->post('name');
+            $data['url_clean'] = $this->input->post('url_clean');
+
+            if($this->form_validation->run()) {
+                $url_clean = $this->input->post('url_clean');
+
+                if (empty($url_clean)) {
+                    $url_clean = clean_name($this->input->post('name'));
+                }
+
+                // Form valido
+                $save = [
+                    'name' => $this->input->post('name'),
+                    'url_clean' => $url_clean
+                ];
+
+                if(is_null($category_id)) {
+                    $category_id = $this->Category->insert($save);
+                } else {
+                    $this->Category->update($category_id ,$save);
+                }
+            }
+        }
+
+        $view["body"] = $this->load->view("admin/category/save", $data, true);
+        
+        $this->parser->parse("admin/template/body", $view);
+    }
+
+    public function category_delete($category_id = null) {
+        if (is_null($category_id)) {
+            echo false;
+        }
+        
+        $this->Category->delete($category_id);
+        echo true;
+    }
+
+    public function images_server() {
+        $data['images'] = all_images();
+        $this->load->view('admin/post/image', $data);
+    }
+
     public function upload($post_id = null, $title = null) {
         $field_image                    = 'upload';
 
@@ -156,7 +231,7 @@ class Admin extends CI_Controller {
         }
     }
 
-    function resize_image($path_image) {
+    private function resize_image($path_image) {
         $config['image_library']    = 'gd2';
         $config['source_image']     = $path_image;
         $config['maintain_ratio']   = true;

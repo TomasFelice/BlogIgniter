@@ -61,8 +61,8 @@
         <?= form_label('Imagen', 'image'); ?>
         <?php
             $file_input = array(
-                'name' => 'image',
-                'id' => 'image',
+                'name' => 'upload',
+                'id' => 'upload',
                 'class' => 'form-control input-lg',
                 'value' => '',
                 'type' => 'file'

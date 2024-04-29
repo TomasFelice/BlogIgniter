@@ -19,9 +19,11 @@ function clean_name($name) {
 }
 
 function all_images() {
+    // Cargamos la librería de archivos
     $CI = & get_instance();
     $CI->load->helper('directory');
 
+    // Obtenemos los archivos
     $dir = "uploads/post";
     $files = directory_map($dir);
 
