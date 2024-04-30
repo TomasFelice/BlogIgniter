@@ -47,6 +47,7 @@ class Admin extends CI_Controller {
             $data['posted'] = "";
             $data['url_clean'] = "";
             $data['image'] = "";
+            $data['category_id'] = "";
             $view["title"] = "Crear Post";
         } else {
             // Editar post
@@ -57,9 +58,12 @@ class Admin extends CI_Controller {
             $data['posted'] = $post->posted;
             $data['url_clean'] = $post->url_clean;
             $data['image'] = $post->image;
+            $data['category_id'] = $post->category_id;
             $view["title"] = "Editar Post";
         }
 
+        // Obtenemos el listado de categorias para el select
+        $data['categories'] = categories_to_form($this->Category->findAll());
 
         // Si es un post
         if ($this->input->server("REQUEST_METHOD") == "POST") {
@@ -67,12 +71,14 @@ class Admin extends CI_Controller {
             $this->form_validation->set_rules('content', 'Contenido', 'required|min_length[10]');
             $this->form_validation->set_rules('description', 'Descripcion', 'max_length[100]');
             $this->form_validation->set_rules('posted', 'Publicado', 'required');
+            $this->form_validation->set_rules('category_id', 'Categoría', 'required');
 
             $data['title'] = $this->input->post('title');
             $data['content'] = $this->input->post('content');
             $data['description'] = $this->input->post('description');
             $data['posted'] = $this->input->post('posted');
             $data['url_clean'] = $this->input->post('url_clean');
+            $data['category_id'] = $this->input->post('category_id');
 
             if($this->form_validation->run()) {
                 $url_clean = $this->input->post('url_clean');
@@ -87,7 +93,8 @@ class Admin extends CI_Controller {
                     'title' => $this->input->post('title'),
                     'description' => $this->input->post('description'),
                     'posted' => $this->input->post('posted'),
-                    'url_clean' => $url_clean
+                    'url_clean' => $url_clean,
+                    'category_id' => $this->input->post('category_id')
                 ];
 
                 if(is_null($post_id)) {

@@ -78,6 +78,11 @@
         <!-- dropdown -> select en html -->
         <?= form_dropdown('posted', $data_posted, $posted, 'class="form-control input lg"'); ?>                                        
     </div>
+    <div class="form-group"> 
+        <?= form_label('Categorías', 'category_id'); ?>
+        <!-- dropdown -> select en html -->
+        <?= form_dropdown('category_id', $categories, $category_id, 'class="form-control input lg"'); ?>                                        
+    </div>
 
     <?= form_submit('mysubmit', 'Guardar', 'class="btn btn-primary"'); ?>
 
