@@ -1,12 +1,13 @@
 <?php
 
-class Admin extends CI_Controller {
+class Admin extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
 
         $this->load->library("parser");
         $this->load->library("Form_validation");
+        $this->load->library('Grocery_CRUD');
 
 		$this->load->helper("url");
         $this->load->helper('form');
@@ -19,6 +20,8 @@ class Admin extends CI_Controller {
 
         $this->load->model("Post");
         $this->load->model("Category");
+
+        $this->init_seccion_auto(9);
     }
 
     public function index() {
@@ -127,9 +130,35 @@ class Admin extends CI_Controller {
      */
 
     public function category_list() {
-        $data["categories"] = $this->Category->findAll();
+        // $data["categories"] = $this->Category->findAll();
 
-        $view["body"] = $this->load->view("admin/category/list", $data, true);
+        // $view["body"] = $this->load->view("admin/category/list", $data, true);
+        $crud = new grocery_CRUD();
+ 
+        $crud->set_theme('datatables');
+        $crud->set_table('categories');
+        $crud->set_subject('Categoría');
+        $crud->columns('category_id','name');
+
+        $crud->callback_before_insert([
+            $this,'category_iu_before_callback'
+        ]);
+        $crud->callback_before_update([
+            $this,'category_iu_before_callback'
+        ]);
+
+        $crud->set_rules('name', 'Nombre', 'required|min_length[5]|max_length[100]');
+
+        // Para no volver a cargar JQuery
+        $crud->unset_jquery();
+        // Para no mostrar el botón de ver
+        $crud->unset_read();
+        // Para no mostrar el botón de clonar
+        $crud->unset_clone();
+ 
+        $output = $crud->render();
+
+        $view['grocery_crud'] = json_encode($output);
         $view["title"] = "Categories";
         
         $this->parser->parse("admin/template/body", $view);
@@ -250,4 +279,14 @@ class Admin extends CI_Controller {
         $this->image_lib->resize();
     }
 
+    /*     * ***
+     * CALLBACKS
+     */
+
+    public function category_iu_before_callback($post_array, $pk = null) {
+        if ($post_array['url_clean']  == '') {
+            $post_array['url_clean'] = clean_name($post_array['name']);
+        }
+        return $post_array;
+    }
 }

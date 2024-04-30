@@ -7,7 +7,7 @@
                 <img src="<?php echo base_url() ?>assets/img/logo.png" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Nombre</p>
+                <p><?= $this->session->userdata('name') ?></p>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
                     <span>Categorías</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="<?php echo base_url() ?>admin/category_save"><i class="fa fa-circle-o"></i> Crear</a></li>
+                    <li><a href="<?php echo base_url() ?>admin/category_list/add"><i class="fa fa-circle-o"></i> Crear</a></li>
                     <li><a href="<?php echo base_url() ?>admin/category_list"><i class="fa fa-circle-o"></i> Listar</a></li>
                 </ul>
             </li>

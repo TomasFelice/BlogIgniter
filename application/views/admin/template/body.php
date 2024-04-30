@@ -18,7 +18,11 @@
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/admin/skins/_all-skins.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
         
+        <!-- JQuery -->
         <script src="<?php echo base_url() ?>assets/js/jquery-3.3.1.min.js"></script>
+
+        <!-- Estilos Grocery CRUD -->
+        <?php isset($grocery_crud) ? $this->load->view('admin/template/grocery_crud_header', ['grocery_crud' => $grocery_crud]) : '';?>
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
@@ -44,18 +48,18 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="box">
-                        <div class="box-header">
-                            
-                        </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="box">
 								<div class="box-header">
-								  <h3 class="box-title">Condensed Full Width Table</h3>
+								  
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
-                                    {body}
+                                    <?php isset($body) ? '{body}' : '';?>
+                                    
+
+                                    <?php isset($grocery_crud) ? $this->load->view('admin/template/grocery_crud', ['grocery_crud' => $grocery_crud]) : '';?>
 								</div>
 								<!-- /.box-body -->
 							  </div>

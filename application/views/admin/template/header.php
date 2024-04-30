@@ -22,7 +22,7 @@
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?php echo base_url() ?>assets/img/logo.png" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Yo</span>
+                        <span class="hidden-xs"><?= $this->session->userdata('name') ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -30,7 +30,7 @@
                             <img src="<?php echo base_url() ?>assets/img/logo.png" class="img-circle" alt="User Image">
 
                             <p>
-                                Yo - Web Developer
+                                <?= $this->session->userdata('name') ?> - Web Developer
                                 <small>Member since Nov. 2012</small>
                             </p>
                         </li>
@@ -55,7 +55,7 @@
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="<?= base_url() . 'app/logout' ?>" class="btn btn-default btn-flat">Sign out</a>
                             </div>
                         </li>
                     </ul>
