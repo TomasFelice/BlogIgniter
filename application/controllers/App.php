@@ -99,4 +99,35 @@ class App extends MY_Controller {
 		redirect( site_url( LOGIN_PAGE . '?' . AUTH_LOGOUT_PARAM . '=1', $redirect_protocol ) );
 	}
 
+	/* Perfil de usuario */
+
+	public function profile() {
+		$data['user'] = $this->User->find($this->session->userdata('id'));
+
+		$this->form_validation->set_rules('old_pass', 'Contraseña actual', 'required|callback_validate_same_password');
+		$this->form_validation->set_rules('new_pass', 'Contraseña nueva', 'required|min_length[8]|max_length[72]|callback_validate_password');
+		$this->form_validation->set_rules('new_pass_verify', 'Repita la nueva contraseña', 'required|matches[new_pass]');
+
+		if($this->input->server('REQUEST_METHOD') == 'POST') {
+			if($this->form_validation->run()) {
+				// Formulario valido
+	
+				$save = [
+					'passwd' => $this->authentication->hash_passwd($this->input->post('new_pass'))
+				];
+	
+				$this->User->update($this->session->userdata('id'), $save);
+				$this->session->sess_destroy();
+				$this->session->set_flashdata('text', 'Contraseña actualizada');
+				$this->session->set_flashdata('type', 'error');
+				redirect('/login');
+			}
+		}
+
+		$view["body"] = $this->load->view("app/profile", $data, true);
+		$view["title"] = 'Perfil';
+        
+        $this->parser->parse("admin/template/body", $view);
+	}
+
 }

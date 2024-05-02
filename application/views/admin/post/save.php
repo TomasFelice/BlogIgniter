@@ -6,6 +6,9 @@
         <?php
             $text_input = array(
                 'name' => 'title',
+                'minLength' => 10,
+                'maxLength' => 65,
+                'required' => 'required',
                 'id' => 'title',
                 'class' => 'form-control input-lg',
                 'value' => $title
@@ -13,7 +16,7 @@
 
             echo form_input($text_input);
         ?>
-        <?= form_error('title', '<div class="text-error">', '</div>'); ?>
+        <?= form_error('title', '<div class="text-danger">', '</div>'); ?>
     </div>
     <div class="form-group">
         <?= form_label('Url Limpia', 'url_clean'); ?>
@@ -27,7 +30,7 @@
 
             echo form_input($text_input);
         ?>
-        <?= form_error('url_clean', '<div class="text-error">', '</div>'); ?>
+        <?= form_error('url_clean', '<div class="text-danger">', '</div>'); ?>
     </div>
     <div class="form-group"> 
         <?= form_label('Contenido', 'content'); ?>
@@ -41,7 +44,7 @@
 
             echo form_textarea($text_area);
         ?>  
-        <?= form_error('content', '<div class="text-error">', '</div>'); ?>
+        <?= form_error('content', '<div class="text-danger">', '</div>'); ?>
     </div>
     <div class="form-group"> 
         <?= form_label('Descripcion', 'description'); ?>
@@ -55,7 +58,7 @@
 
             echo form_textarea($text_area);
         ?>
-        <?= form_error('description', '<div class="text-error">', '</div>'); ?>  
+        <?= form_error('description', '<div class="text-danger">', '</div>'); ?>  
     </div>
     <div class="form-group"> 
         <?= form_label('Imagen', 'image'); ?>

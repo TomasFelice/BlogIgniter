@@ -5,27 +5,75 @@ class Admin extends MY_Controller {
     public function __construct() {
         parent::__construct();
 
-        $this->load->library("parser");
         $this->load->library("Form_validation");
         $this->load->library('Grocery_CRUD');
 
-		$this->load->helper("url");
         $this->load->helper('form');
-        $this->load->helper('text');
-
-        $this->load->helper('post_helper');
-        $this->load->helper('date_helper');
-
-        $this->load->database();
-
-        $this->load->model("Post");
-        $this->load->model("Category");
 
         $this->init_seccion_auto(9);
     }
 
     public function index() {
-        $this->load->view("admin/test");
+        redirect('admin/post_list');
+    }
+
+    public function user_crud () {
+        $crud = new grocery_CRUD();
+ 
+        $crud->set_theme('datatables');
+        $crud->set_table('users');
+        $crud->set_subject('Usuario');
+
+        // Solo admins
+        $crud->where('auth_level', 9);
+
+        $state = $crud->getState();
+        
+        $crud->columns('username','email', 'avatar');
+
+        if ($state == 'edit' || $state == 'update' || $state == 'update_validation') {
+            // Modo edición
+            $crud->fields('auth_level', 'created_at', 'user_id', 'avatar');
+        } else {
+            // Modo inserción
+            $crud->fields('auth_level', 'created_at', 'user_id', 'username', 'email', 'passwd', 'avatar');
+            $crud->set_rules('email', 'Email', 'required|valid_email|is_unique[' . config_item('user_table') . '.email]');
+            $crud->set_rules('username', 'Usuario', 'max_length[50]|is_unique[' . config_item('user_table') . '.username]|required');
+            $crud->set_rules('passwd', 'Contraseña', 'min_length[8]|required|max_length[72]|callback_validate_password');
+        }
+        
+        $crud->callback_before_insert([
+            $this,'user_before_insert_callback'
+        ]);
+        $crud->callback_after_upload([
+            $this,'user_after_upload_callback'
+        ]);
+
+        // Cambiamos la forma de mostrar los campos
+        $crud->display_as('username', 'Usuario');
+        $crud->display_as('passwd', 'Contraseña');
+
+        // Ocultamos algunos campos
+        $crud->field_type('auth_level', 'hidden');
+        $crud->field_type('created_at', 'hidden');
+        $crud->field_type('user_id', 'hidden');
+        $crud->field_type('passwd', 'password');
+        $crud->set_field_upload('avatar', 'uploads/user', 'png|jpg');
+
+        // Para no volver a cargar JQuery
+        $crud->unset_jquery();
+        // Para no mostrar el botón de ver
+        $crud->unset_read();
+        // Para no mostrar el botón de clonar
+        $crud->unset_clone();
+ 
+        $output = $crud->render();
+
+        $view['grocery_crud'] = json_encode($output);
+
+        $view["title"] = "Usuario";
+        
+        $this->parser->parse("admin/template/body", $view);
     }
 
     /*     * ***
@@ -33,9 +81,38 @@ class Admin extends MY_Controller {
      */
 
     public function post_list() {
-        $data["posts"] = $this->Post->findAll();
+        // $data["posts"] = $this->Post->findAll();
 
-        $view["body"] = $this->load->view("admin/post/list", $data, true);
+        // $view["body"] = $this->load->view("admin/post/list", $data, true);
+        $crud = new grocery_CRUD();
+ 
+        $crud->set_table('posts');
+        $crud->set_subject('Post');
+        $crud->columns('post_id','title', 'created_at', 'description', 'image', 'posted');
+
+        $crud->set_rules('title', 'Titulo', 'required|min_length[10]|max_length[65]');
+        $crud->set_rules('content', 'Contenido', 'required|min_length[10]');
+        $crud->set_rules('description', 'Descripcion', 'max_length[100]');
+        $crud->set_rules('posted', 'Publicado', 'required');
+        $crud->set_rules('category_id', 'Categoría', 'required');
+
+        // Para no volver a cargar JQuery
+        $crud->unset_jquery();
+        // Para no mostrar el botón de ver
+        $crud->unset_read();
+        // Para no mostrar el botón de clonar
+        $crud->unset_clone();
+        // Para no mostrar el botón de agregar
+        $crud->unset_add();
+        // Para no mostrar el botón de editar
+        $crud->unset_edit();
+
+        $crud->add_action('Editar', '', 'admin/post_save', 'edit-icon');
+ 
+        $output = $crud->render();
+
+        $view['grocery_crud'] = json_encode($output);
+
         $view["title"] = "Posts";
         
         $this->parser->parse("admin/template/body", $view);
@@ -55,6 +132,11 @@ class Admin extends MY_Controller {
         } else {
             // Editar post
             $post = $this->Post->find($post_id);
+
+            if (!isset($post)) {
+                show_404();
+            }
+
             $data['title'] = $post->title;
             $data['content'] = $post->content;
             $data['description'] = $post->description;
@@ -107,6 +189,8 @@ class Admin extends MY_Controller {
                 }
 
                 $this->upload($post_id, $save['title']);
+                
+                redirect('admin/post_save/' . $post_id);
             }
         }
 
@@ -264,6 +348,11 @@ class Admin extends MY_Controller {
             }
 
             $this->resize_image($data['full_path']);
+        } else if (!empty($_FILES[$image]['name'])) {
+            // Error al cargar la imagen
+            // set_flashdata sirve para guardar mensajes en la session
+            $this->session->set_flashdata('text', $this->upload->display_errors());
+            $this->session->set_flashdata('type', 'error');
         }
     }
 
@@ -289,4 +378,24 @@ class Admin extends MY_Controller {
         }
         return $post_array;
     }
+
+    public function user_before_insert_callback($post_array) {
+        $post_array['passwd'] = $this->authentication->hash_passwd($post_array['passwd']);
+        $post_array['user_id'] = $this->User->get_unused_id();
+        $post_array['created_at'] = date('Y-m-d H:i:s');
+        $post_array['auth_level'] = 9;
+
+        return $post_array;
+    }
+
+    public function user_after_upload_callback($uploader_response, $field_info, $files_to_upload) {
+        $this->load->library('Image_moo');
+        //Is only one file uploaded so it ok to use it with $uploader_response[0].
+        $file_uploaded = $field_info->upload_path . '/' . $uploader_response[0]->name;
+        $this->image_moo->load($file_uploaded)->resize(500, 500)->save($file_uploaded, true);
+
+        return true;
+    }
+
+
 }

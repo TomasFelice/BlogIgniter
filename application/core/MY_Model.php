@@ -193,7 +193,7 @@ class MY_Model extends CI_Model
     }
 
 	public function count() {
-        $count = $this->db->query('SELECT 1 FROM [' . $this->table . ']');
+        $count = $this->db->query("SELECT $this->table_id FROM $this->table");
 		return $count->num_rows();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 function posted() {
-    return array("si" => "Si", "no" => "No");
+    return array("no" => "No", "si" => "Si");
 }
 
 function categories_to_form($categories) {
@@ -29,3 +29,16 @@ function all_images() {
 
     return $files;
 }
+
+function image_post($post_id) {
+    // Cargamos la librería de archivos
+    $CI = & get_instance();
+    $post = $CI->Post->find($post_id);
+
+    if(isset($post->image) && !empty($post->image)) {
+        return base_url() . "uploads/post/" . $post->image;
+    }
+
+    return base_url() . "assets/img/logo_black.png";
+}
+

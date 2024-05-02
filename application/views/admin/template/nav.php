@@ -29,6 +29,16 @@
             </li>
             <li class="treeview">
                 <a href="#">
+                    <i class="fa fa-user"></i>
+                    <span>Usuarios</span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="<?php echo base_url() ?>admin/user_crud/add"><i class="fa fa-circle-o"></i> Crear</a></li>
+                    <li><a href="<?php echo base_url() ?>admin/user_crud"><i class="fa fa-circle-o"></i> Listar</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
                     <i class="fa fa-files-o"></i>
                     <span>Post</span>
                 </a>

@@ -56,9 +56,9 @@
 								</div>
 								<!-- /.box-header -->
 								<div class="box-body">
-                                    <?php isset($body) ? '{body}' : '';?>
-                                    
-
+                                    <?php if (isset($body)): ?>
+                                        {body}
+                                    <?php endif; ?>
                                     <?php isset($grocery_crud) ? $this->load->view('admin/template/grocery_crud', ['grocery_crud' => $grocery_crud]) : '';?>
 								</div>
 								<!-- /.box-body -->

@@ -39,6 +39,35 @@ class MY_Controller extends Auth_Controller
 			'auth_level' => $this->auth_data->auth_level
 		]);
 	}
+
+	    /*     * ***
+     * VALIDATION
+     */
+
+     public function validate_password($password) {
+        // Verificamos que tenga al menos un digito
+        $regex = '(?=.*\d)';
+        // Verificamos que tenga al menos una minuscula
+        $regex .= '(?=.*[a-z])';
+        // Verificamos que tenga al menos una mayuscula
+        $regex .= '(?=.*[A-Z])';
+        // Verificamos que no tenga espacios, tabs o otros caracteres especiales
+        $regex .= '(?!.*\s)';
+        // Verificamos que no tenga contrabarra, apostrofe, comillas, etc
+        $regex .= '(?!.*[\\\\\'"])';
+
+        if (preg_match('/^' . $regex . '.*$/', $password)) {
+            return true;
+        }
+
+        return false;
+     }
+
+	 public function validate_same_password($password) {
+		$user = $this->User->find($this->session->userdata('id'));
+
+		return $this->authentication->check_passwd($user->passwd, $password);
+	 }
 }
 
 /* End of file MY_Controller.php */
