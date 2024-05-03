@@ -1,3 +1,127 @@
-nav.navbar img.logo {
+nav.navbar img.logo{
     max-width: 45px;
+}
+.user-options{
+    position: relative;
+    top:-8px;
+    margin-left: 15px;
+}
+.user-options a{
+    color: #FFF;
+    padding-left: 8px;
+}
+
+#search-results .dropdown-toggle,
+#search-results .btn{
+    border-radius: 0;
+    border-color:#FFF;
+    color: #FFF;
+}
+/*POST*/
+
+.list-posts .post{
+    margin-bottom: 20px;
+}
+
+.detail-post img{
+    width: 100%;
+    height: auto;
+}
+
+.post {
+    transition: 250ms all;
+}
+.post:hover{
+    box-shadow:0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+    transform: scale(1.01);
+}
+.post img{
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: all 1s;
+    padding: 0;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+.post a{
+    text-decoration: none;
+    color: inherit;
+}
+.favorite-post{
+    color:#FFF;
+    cursor: pointer;
+}
+/*PROFILE*/
+.bg-profile{
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    background: #7ebcff;
+}
+.img-profile{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 50%;
+}
+
+/*GENERAL*/
+.box-center{
+    display: block;
+    margin: 0 auto;
+}
+
+/*SOCIAL LINKS*/
+
+.social-links{
+    margin: 0 0 10px 10px;
+}
+
+.social-links i{
+    display: block;
+    margin: 0 5px;
+    color: #FFF;
+    text-align: center;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    float: left;
+    background: #ff0000;
+    box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.75);
+}
+
+.social-links i:before {
+    position: relative;
+    top: 15px;
+}
+
+.social-links i.fa-youtube{
+    animation: changeFaYoutube 1.5s linear 0s infinite;
+}
+
+.social-links i:hover {
+    transition: 500ms all;
+    transform: scale(1.05);
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.9);
+}
+
+.social-links i.fa-facebook{
+    background: #4466bb;
+}
+
+.social-links i.fa-twitter{
+    background: #11aaff;
+}
+
+.social-links i.fa-linkedin{
+    background: #0077bb;
+}
+
+@keyframes changeFaYoutube {   
+    0%   { background-color: #FF0000;}   
+    50%   { background-color: #A60000;}   
+    100% { background-color: #FF0000;}  
 }

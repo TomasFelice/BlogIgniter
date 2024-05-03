@@ -17,11 +17,27 @@
              folder instead of downloading all of them to reduce the load. -->
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/admin/skins/_all-skins.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-        
+
+        <!-- JQuery -->
         <script src="<?php echo base_url() ?>assets/js/jquery-3.3.1.min.js"></script>
     </head>
     <body class="hold-transition login-page">
+
         {body}
+
+        <!-- Bootstrap -->
         <script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>
+        <!-- Toaster -->
+        <script src="<?php echo base_url() ?>assets/js/jquery.toaster.js"></script>
+        
+        <?php if(!is_null($this->session->flashdata('text'))) : ?>
+            <script>
+                $.toaster({
+                    priority : '<?php echo $this->session->flashdata('type') ?>',
+                    title : '<?php echo $this->session->flashdata('text') ?>',
+                    message : ''
+                });
+            </script>
+        <?php endif; ?>
     </body>
 </html>

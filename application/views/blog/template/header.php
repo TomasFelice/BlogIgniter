@@ -12,23 +12,45 @@
                 <a class="nav-link" href="#"><?= APP_NAME ?> <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
+        <div class="form-inline my-2 my-lg-0" id="search-results">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div role="separator" class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
+                    <button class="list-categories btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="">Categoría</button>
+                    <div class="dropdown-menu list-categories">
+                        
+                        <?php $this->load->view('blog/utils/category_list', ['categories' => get_all_categories()]) ?>
                     </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input type="text" class="form-control input-search-post" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button">Button</button>
+                    <button class="btn btn-outline-secondary btn-search-post" type="button"><i class="fa fa-search"></i></button>
                 </div>
             </div>
-        </form>
+        </div>
+        <ul class="nav navbar-nav navbar-right user-options">
+            <?php if($this->session->userdata('id') != null) : ?>
+                <li title="Perfil">
+                    <a href="<?= base_url() . 'app/profile' ?>">
+                        <i class="fa fa-user fa-2x p-2"></i>
+                    </a>
+                </li>
+                <li title="Favoritos">
+                    <a href="#">
+                        <i class="fa fa-heart fa-2x p-2"></i>
+                    </a>
+                </li>
+                <li title="Cerrar Sesión">
+                    <a href="<?= base_url() . 'app/logout' ?>">
+                        <i class="fa fa-sign-out fa-2x p-2"></i>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li title="Login">
+                    <a href="login">
+                        <i class="fa fa-sign-in fa-2x p-2"></i>
+                    </a>
+                </li>
+            <?php endif; ?>
+        </ul>
     </div>
 </nav>

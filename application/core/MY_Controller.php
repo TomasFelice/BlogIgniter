@@ -23,21 +23,38 @@ class MY_Controller extends Auth_Controller
 	public function __construct()
 	{
 		parent::__construct();
+
+		$this->load->helper('User_helper');
 	}
 
-	public function init_seccion_auto($level) {
+	public function init_session_auto($level) {
 		$this->require_min_level($level);
 
-		if (!$this->auth_data) {
-			// Redirect to login
+		if ($this->auth_data) {
+			$this->session->set_userdata([
+				'email' => $this->auth_data->email,
+				'name' => $this->auth_data->username,
+				'id' => $this->auth_data->user_id,
+				'auth_level' => $this->auth_data->auth_level,
+				'avatar' => image_user($this->auth_data->user_id)
+			]);
 		}
 
-		$this->session->set_userdata([
-			'email' => $this->auth_data->email,
-			'name' => $this->auth_data->username,
-			'id' => $this->auth_data->user_id,
-			'auth_level' => $this->auth_data->auth_level
-		]);
+	}
+
+	public function optional_session_auto($level) {
+		$this->verify_min_level($level);
+
+		if ($this->auth_data) {
+			$this->session->set_userdata([
+				'email' => $this->auth_data->email,
+				'name' => $this->auth_data->username,
+				'id' => $this->auth_data->user_id,
+				'auth_level' => $this->auth_data->auth_level,
+				'avatar' => image_user($this->auth_data->user_id)
+			]);
+		}
+
 	}
 
 	    /*     * ***

@@ -13,11 +13,16 @@
         <!-- Theme style -->
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/blog/custom.css">
 
+        <script>
+            var BASE_URL = '<?php echo base_url() ?>';
+        </script>
+
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <?php $this->load->view("blog/template/header"); ?>
 
         <section class="container">
+            <div id="post_search"></div>
             {body}
         </section>
 
@@ -27,5 +32,19 @@
         <script src="<?php echo base_url() ?>assets/js/jquery-3.3.1.min.js"></script>
         <!-- Bootstrap -->
         <script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>
+        <!-- Toaster -->
+        <script src="<?php echo base_url() ?>assets/js/jquery.toaster.js"></script>
+        <!-- Main.js -->
+        <script src="<?php echo base_url() ?>assets/js/blog/main.js"></script>
+
+        <?php if(!is_null($this->session->flashdata('text'))) : ?>
+            <script>
+                $.toaster({
+                    priority : '<?php echo $this->session->flashdata('type') ?>',
+                    title : '<?php echo $this->session->flashdata('text') ?>',
+                    message : ''
+                });
+            </script>
+        <?php endif; ?>
     </body>
 </html>

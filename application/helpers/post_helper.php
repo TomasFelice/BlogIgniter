@@ -42,3 +42,9 @@ function image_post($post_id) {
     return base_url() . "assets/img/logo_black.png";
 }
 
+function get_all_categories() {
+    $CI = & get_instance();
+
+    return $CI->Category->findAll();
+}
+

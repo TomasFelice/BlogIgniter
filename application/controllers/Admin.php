@@ -10,7 +10,7 @@ class Admin extends MY_Controller {
 
         $this->load->helper('form');
 
-        $this->init_seccion_auto(9);
+        $this->init_session_auto(9);
     }
 
     public function index() {
@@ -352,7 +352,7 @@ class Admin extends MY_Controller {
             // Error al cargar la imagen
             // set_flashdata sirve para guardar mensajes en la session
             $this->session->set_flashdata('text', $this->upload->display_errors());
-            $this->session->set_flashdata('type', 'error');
+            $this->session->set_flashdata('type', 'danger');
         }
     }
 

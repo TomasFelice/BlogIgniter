@@ -1,10 +1,18 @@
 <div class="row">
-    <div class="col-lg-6">
+
+    <div class="col-lg-12 mb-3 mt-3">
+        <div class="box-center bg-profile">
+            <img src="<?= image_user($this->session->userdata('id')) ?>" class="user-image img-profile" alt="User Image">
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-3">
         <div class="card">
             <div class="card-header">
                 <h4><i class='fa fa-cog'></i> Cambio de Contraseña</h4>
             </div>
             <div class="card-body">
+                <!-- Creando form con Helper de CodeIgniter -->
             <?= form_open('', 'class="my_form" enctype="multipart/form-data"'); ?>
                 <div class="form-group">
                     <?= form_label('Contraseña actual', 'old_pass'); ?>
@@ -73,7 +81,7 @@
             </div>
             <div class="card-body">
                 <div class="form-group">
-                    <?= form_label('Usuario', 'name'); ?>
+                    <?= form_label('Usuario', 'username'); ?>
                     <?php
                         $text_input = array(
                             'readonly' => 'readonly',
@@ -83,6 +91,7 @@
 
                         echo form_input($text_input);
                     ?>
+                    <?= form_error('username', '<div class="text-error">', '</div>'); ?>
                 </div>
                 <div class="form-group">
                     <?= form_label('Email', 'email'); ?>
@@ -95,8 +104,27 @@
 
                         echo form_input($text_input);
                     ?>
+                    <?= form_error('email', '<div class="text-error">', '</div>'); ?>
                 </div>
+
+                <!-- Creando form con HTML Clásico -->
+                <form action="<?= base_url() ?>app/load_avatar" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="image">Avatar</label>
+                            <input type="file" name="image" class="form-control input-lg">
+                        </div>
+                        <input type="submit" value="Enviar" class="btn btn-primary">
+                </form>
+
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    window.onload = () => {
+        $('.img-profile').click(() => {
+            $('[name=image]').trigger('click');
+        })
+    }
+</script>
