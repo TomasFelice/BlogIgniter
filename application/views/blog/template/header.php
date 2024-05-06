@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li title="Favoritos">
-                    <a href="#">
+                    <a href="<?php echo base_url() . 'blog/favorite_list' ?>">
                         <i class="fa fa-heart fa-2x p-2"></i>
                     </a>
                 </li>
@@ -46,7 +46,7 @@
                 </li>
             <?php else: ?>
                 <li title="Login">
-                    <a href="login">
+                    <a href="<?php echo base_url() ?>login">
                         <i class="fa fa-sign-in fa-2x p-2"></i>
                     </a>
                 </li>

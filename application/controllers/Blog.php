@@ -4,6 +4,8 @@ class Blog extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->optional_session_auto(1);
+        $this->load->model('Group_user_post', 'gup');
     }
 
     public function index ($num_page = 1) {
@@ -95,18 +97,53 @@ class Blog extends MY_Controller {
         $search = $this->input->get_post('search');
         $category_id = $this->input->get_post('category_id');
 
-        if(is_null($search) || empty($search)) {
+        if(is_null($search) || $search == '') {
             return '';
         }
 
         // explode separa la cadena en un array
         $searchs = explode(' ', $search);
 
-        $posts = $this->Post->getBySearch($search, $category_id);
+        $posts = $this->Post->getBySearch($searchs, $category_id);
 
         $data['posts'] = $posts;
         $data['pagination'] = false;
         $view['body'] = $this->load->view("blog/utils/post_list", $posts);
+    }
+
+    /* Favorites */
+    
+    public function favorite_save($post_id) {
+
+        if ($this->session->userdata("id") != null) {
+            $save = array('user_id' => $this->session->userdata("id"), 'post_id' => $post_id);
+            $this->gup->insert($save);
+            echo $post_id;
+        } else
+            echo 0;
+    }
+
+    public function favorite_delete($post_id) {
+
+        if ($this->session->userdata("id") != null) {
+            $this->gup->deleteByPostIdAndUserId($post_id, $this->session->userdata("id"));
+            echo $post_id;
+        } else
+            echo 0;
+    }
+
+    public function favorite_list() {
+
+        if ($this->session->userdata("id") == null) {
+            show_404();
+        }
+
+        $posts = $this->Post->getGUP($this->session->userdata("id"));
+
+        $data['posts'] = $posts;
+        $data['pagination'] = false;
+        $view['body'] = $this->load->view("blog/utils/post_list", $data, TRUE);
+        $this->parser->parse("blog/template/body", $view);
     }
 }
 

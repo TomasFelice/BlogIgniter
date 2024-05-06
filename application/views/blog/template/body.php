@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrap.min.css">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/font-awesome/css/font-awesome.min.css">
+        <!-- JQuery Comments -->
+        <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/blog/jquery-comments.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/blog/custom.css">
 
@@ -34,6 +36,8 @@
         <script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>
         <!-- Toaster -->
         <script src="<?php echo base_url() ?>assets/js/jquery.toaster.js"></script>
+        <!-- JQuery Comments -->
+        <script src="<?php echo base_url() ?>assets/js/blog/jquery-comments.min.js"></script>
         <!-- Main.js -->
         <script src="<?php echo base_url() ?>assets/js/blog/main.js"></script>
 

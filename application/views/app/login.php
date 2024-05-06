@@ -31,7 +31,7 @@
 
         </form>
 
-        <a href="#">Olvide mi contraseña</a><br>
+        <a href="<?php echo base_url() ?>app/recover">Olvidé mi contraseña</a><br>
         <a href="register" class="text-center">Registrarse</a>
 
     </div>

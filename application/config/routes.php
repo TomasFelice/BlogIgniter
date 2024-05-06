@@ -50,6 +50,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'index';
+$route['comment/(:any)'] = 'comment/$1';
+$route['blog/favorite_save/(:num)'] = 'blog/favorite_save/$1';
+$route['blog/favorite_delete/(:num)'] = 'blog/favorite_delete/$1';
 $route['blog/category/(:any)'] = 'blog/category/$1';
 // :num is a placeholder for a number
 $route['blog/(:num)'] = 'blog/index/$1';

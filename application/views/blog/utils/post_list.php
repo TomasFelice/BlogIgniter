@@ -1,7 +1,12 @@
 <?php foreach ($posts as $key => $post): ?>
 
 <div class="card post">
-    <div class="card-header bg-dark"></div>
+    <div class="card-header bg-danger">
+    <?php if ($this->session->userdata("id") != null): ?>
+        <i class="fa fa-2x <?php echo ($post->group_user_post_id != null) ? 'fa-heart' : 'fa-heart-o' ?> favorite-post" data-id="<?php echo $post->post_id ?>"></i>
+    <?php endif; ?>
+        
+    </div>
     <a href="<?= base_url() .'blog/'. $post->c_url_clean .'/'. $post->url_clean ?>">
         <div class="card-body">
             <img src="<?= image_post($post->post_id) ?>">
@@ -14,7 +19,7 @@
 
 <?php endforeach; ?>
 
-<?php if(pagination) : ?>
+<?php if($pagination) : ?>
     <?php 
         $prev = $current_page - 1;
         $next = $current_page + 1;
