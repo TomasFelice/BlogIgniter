@@ -40,6 +40,7 @@ define('APP_NAME', "BlogIgniter");
 define('PROJECT_FOLDER', "BlogIgniter");
 define('APP_DESCRIPTION', "Blog sobre temas de la vida...");
 define('PAGE_SIZE', 2);
+define('PAGE_CACHE', 525600);
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

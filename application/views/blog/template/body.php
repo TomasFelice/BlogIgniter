@@ -15,6 +15,8 @@
         <!-- Theme style -->
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/blog/custom.css">
 
+        <?php meta_tags($title ?? '', $desc ?? '', $imgurl ?? '', $url ?? ''); ?>
+
         <script>
             var BASE_URL = '<?php echo base_url() ?>';
         </script>

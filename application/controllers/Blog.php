@@ -21,6 +21,14 @@ class Blog extends MY_Controller {
 
         $offset = $num_page * PAGE_SIZE;
 
+        // Meta Tags SEO
+        $data = $this->build_header(
+            '',
+            '',
+            '',
+            base_url() . 'blog/'
+        );
+
         $data['last_page'] = $last_page;
         $data['current_page'] = $num_page;
         $data['token_url'] = '/blog/';
@@ -50,6 +58,14 @@ class Blog extends MY_Controller {
         }
 
         $offset = $num_page * PAGE_SIZE;
+        
+        // Meta Tags SEO
+        $data = $this->build_header(
+            APP_NAME . ' - ' . $category->name,
+            'Posts de la categoría "' . $category->name . '"',
+            '',
+            base_url() . 'blog/category/' . $category->url_clean
+        );
 
         $data['last_page'] = $last_page;
         $data['current_page'] = $num_page;
@@ -64,6 +80,7 @@ class Blog extends MY_Controller {
     }
 
     public function post_view(string $c_url_clean, string $url_clean = null) {
+        $this->output->cache(PAGE_CACHE);
 
         if( strpos($this->uri->uri_string(), 'blog/post_view') != false) {
 			show_404();
@@ -85,9 +102,17 @@ class Blog extends MY_Controller {
             show_404();
         }
 
-        $data['post'] = $post;
-        $view['body'] = $this->load->view("blog/utils/post_detail", $data, TRUE);
+        // Meta Tags SEO
+        $data = $this->build_header(
+            APP_NAME . ' - ' . $post->title,
+            $post->description,
+            image_post($post->post_id),
+            base_url() . $category->url_clean . '/' . $post->url_clean,
+        );
         
+        $data['post'] = $post;
+        
+        $view['body'] = $this->load->view("blog/utils/post_detail", $data, TRUE);
         $this->parser->parse("blog/template/body", $view);
 
     }
@@ -140,10 +165,28 @@ class Blog extends MY_Controller {
 
         $posts = $this->Post->getGUP($this->session->userdata("id"));
 
+        // Meta Tags SEO
+        $data = $this->build_header(
+            '',
+            '',
+            '',
+            base_url() . 'blog/favorite_list',
+        );
+
         $data['posts'] = $posts;
         $data['pagination'] = false;
         $view['body'] = $this->load->view("blog/utils/post_list", $data, TRUE);
         $this->parser->parse("blog/template/body", $view);
+    }
+
+    /* Funciones privadas */
+    private function build_header($title = '', $desc = '', $imgurl = '', $url = '') {
+        $data['title'] = $title;
+        $data['desc'] = $desc;
+        $data['imgurl'] = $imgurl;
+        $data['url'] = $url;
+
+        return $data;
     }
 }
 
