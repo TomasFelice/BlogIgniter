@@ -11,9 +11,9 @@ class Emails {
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'smtp.gmail.com';
         $config['smtp_port'] = 25;
-        $config['smtp_user'] = 'tfelice.quinttos@gmail.com';
+        $config['smtp_user'] = '';
         // Cambiar password por el password de la cuenta de correo
-        $config['smtp_pass'] = 'Chic@g01710!';
+        $config['smtp_pass'] = '';
         $config['charset'] = 'utf-8';
         $config['mailtype'] = 'html';
 
@@ -33,7 +33,7 @@ class Emails {
 
     private function send_email($email, $subject, $html) {
         $CI = & get_instance();
-        $CI->email->from('tfelice.quinttos@gmail.com', 'Tomás Felice');
+        $CI->email->from('', 'Tomás Felice');
         $CI->email->to($email);
 
         $CI->email->subject($subject);
